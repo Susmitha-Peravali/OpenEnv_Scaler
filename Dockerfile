@@ -42,4 +42,8 @@ ENV OPENENV_SLEEP="1.0"
 RUN python -c "from env.openenv import OpenEnv; env = OpenEnv(); obs = env.reset(); print('✓ Environment OK:', obs.task_type)"
 
 # Default command: run the full inference benchmark
+<<<<<<< HEAD
 CMD ["python", "inference.py"]
+=======
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "7860"]
+>>>>>>> 80b7f0c (final fix for API submission)

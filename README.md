@@ -1,3 +1,21 @@
+---
+title: OpenEnv Scaler
+emoji: 🚀
+colorFrom: blue
+colorTo: green
+sdk: docker
+app_port: 7860
+---
+
+# OpenEnv Scaler API
+
+This Space exposes endpoints for OpenEnv evaluation.
+
+## Endpoints
+
+- GET `/` → health check
+- POST `/reset` → reset environment
+
 # 🚀 OpenEnv Productivity Environment
 
 ### Hybrid AI Agent for Real-World Task Automation
