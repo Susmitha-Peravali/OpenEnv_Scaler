@@ -16,6 +16,8 @@ dependencies = [
     "openenv>=0.2.0"
 ]
 
-[project.scripts]
+#[project.scripts]
 # This tells OpenEnv how to start your app
-server = "inference:app"
+#server = "inference:app"
+[project.scripts]
+server = "app:main"

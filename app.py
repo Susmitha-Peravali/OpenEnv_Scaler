@@ -1,17 +1,9 @@
-from fastapi import FastAPI
-from env.openenv import OpenEnv
+# app.py
+import uvicorn
+from inference import app
 
-app = FastAPI()
+def main():
+    uvicorn.run(app, host="0.0.0.0", port=8000)
 
-@app.get("/")
-def home():
-    return {"status": "OpenEnv API running"}
-
-@app.post("/reset")
-def reset():
-    env = OpenEnv()
-    obs = env.reset()
-    return {
-        "task_type": obs.task_type,
-        "content": obs.content
-    }
+if __name__ == "__main__":
+    main()
