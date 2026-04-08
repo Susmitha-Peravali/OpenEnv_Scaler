@@ -26,8 +26,7 @@ RUN pip install --no-cache-dir --upgrade pip \
 # Copy the full project
 COPY . .
 
-# Make scripts executable
-RUN chmod +x scripts/run_inference.py
+
 
 # Set Python path so imports resolve correctly
 ENV PYTHONPATH="/app"
@@ -43,4 +42,4 @@ ENV OPENENV_SLEEP="1.0"
 RUN python -c "from env.openenv import OpenEnv; env = OpenEnv(); obs = env.reset(); print('✓ Environment OK:', obs.task_type)"
 
 # Default command: run the full inference benchmark
-CMD ["python", "scripts/run_inference.py"]
+CMD ["python", "inference.py"]
