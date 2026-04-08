@@ -1,0 +1,107 @@
+name: openenv_productivity
+version: "1.0.0"
+description: >
+  An OpenEnv-compatible environment simulating real-world AI productivity tasks.
+  Agents must triage emails, clean messy datasets, review buggy code, and
+  complete a multi-step smart assistant pipeline with cross-step memory.
+
+author: OpenEnv Productivity Team
+license: MIT
+
+observation_space:
+  type: structured
+  fields:
+    - name: task_id
+      type: string
+    - name: task_type
+      type: string
+      enum: [email_triage, data_cleaning, code_review, smart_assistant]
+    - name: content
+      type: string
+      description: Main task content (email text, JSON data, source code, or instruction)
+    - name: metadata
+      type: object
+      description: Contextual info (cleaning rules, valid labels, memory, step hints)
+    - name: step
+      type: integer
+    - name: total_steps
+      type: integer
+      nullable: true
+    - name: done
+      type: boolean
+
+action_space:
+  type: structured
+  fields:
+    - name: action_type
+      type: string
+      enum: [classify, clean, review, respond]
+    - name: payload
+      type: object
+      description: >
+        Task-specific payload:
+        - classify: {label: "spam"|"important"|"work"}
+        - clean:    {cleaned_data: <JSON object>}
+        - review:   {explanation: string, fixed_code: string}
+        - respond:  {response: string}
+
+reward_space:
+  type: float
+  min: 0.0
+  max: 1.0
+  description: Normalized reward score. Incremental for multi-step tasks.
+
+tasks:
+  - id: email_triage
+    name: Email Triage
+    difficulty: easy
+    type: single_step
+    description: >
+      Classify an email as spam, important, or work.
+      Scoring: exact match (0 or 1).
+    num_instances: 5
+
+  - id: data_cleaning
+    name: Data Cleaning
+    difficulty: medium
+    type: single_step
+    description: >
+      Clean messy JSON records: fix names, validate emails, normalize salaries/dates.
+      Scoring: partial credit per field (0.0 to 1.0).
+    num_instances: 2
+
+  - id: code_review
+    name: Code Review
+    difficulty: hard
+    type: single_step
+    description: >
+      Identify bugs in Python code, explain each issue, and provide corrected code.
+      Scoring: keyword matching + fix quality + explanation clarity (0.0 to 1.0).
+    num_instances: 3
+
+  - id: smart_assistant
+    name: Smart Task Assistant
+    difficulty: advanced
+    type: multi_step
+    num_steps: 3
+    description: >
+      Multi-step pipeline: Read email → Extract structured data → Create task schedule.
+      The agent must maintain memory across steps. Incremental rewards per step.
+    num_instances: 1
+
+environment:
+  seed: 42
+  task_order: sequential
+  max_steps_per_episode: 10
+  penalty_for_empty_action: -0.0   # score floor is 0.0
+
+baseline:
+  model: meta-llama/Llama-3.3-70B-Instruct
+  api: HuggingFace Inference API (OpenAI-compatible)
+  api_key_env: HF_TOKEN
+  scores:
+    email_triage: ~0.80
+    data_cleaning: ~0.65
+    code_review: ~0.55
+    smart_assistant: ~0.70
+    overall: ~0.70
