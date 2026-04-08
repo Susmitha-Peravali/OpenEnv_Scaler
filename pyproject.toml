@@ -5,14 +5,17 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "openenv_project"
 version = "0.1.0"
-description = "OpenEnv Hackathon project for multi-mode API submission"
-authors = [
-    { name = "Naga Teja Susmitha", email = "teja.peravali0@gmail.com" }
-]
+description = "FastAPI project for OpenEnv Hackathon"
+authors = [{name = "Teja Susmitha", email = "teja.peravali0@gmail.com"}]
+
+# List all your Python dependencies here
 dependencies = [
-    "pydantic>=2.0.0",
-    "openai>=1.30.0",
-    "python-dotenv>=1.0.0",
     "fastapi",
-    "uvicorn"
+    "uvicorn",
+    "pydantic",
+    "openenv>=0.2.0"
 ]
+
+[project.scripts]
+# This tells OpenEnv how to start your app
+server = "inference:app"
